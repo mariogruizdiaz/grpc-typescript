@@ -6,7 +6,7 @@ import {
 } from "../../proto/sites_grpc_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import { Site, SiteRequest } from "../../proto/sites_pb";
-import { sites } from "../sitesDB";
+import { sites } from "../fakeDB";
 
 export class SitesServer implements ISitesServer {
   createSite(

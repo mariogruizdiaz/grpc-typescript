@@ -6,36 +6,21 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
-import * as google_protobuf_any_pb from "google-protobuf/google/protobuf/any_pb";
+import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 
 export class Site extends jspb.Message { 
     getId(): string;
     setId(value: string): Site;
 
-    getSitesectionname(): string;
-    setSitesectionname(value: string): Site;
-
-
-    hasAppname(): boolean;
-    clearAppname(): void;
-    getAppname(): google_protobuf_any_pb.Any | undefined;
-    setAppname(value?: google_protobuf_any_pb.Any): Site;
+    getSitename(): string;
+    setSitename(value: string): Site;
 
 
     hasDevice(): boolean;
     clearDevice(): void;
-    getDevice(): google_protobuf_any_pb.Any | undefined;
-    setDevice(value?: google_protobuf_any_pb.Any): Site;
-
-
-    hasChannel(): boolean;
-    clearChannel(): void;
-    getChannel(): google_protobuf_any_pb.Any | undefined;
-    setChannel(value?: google_protobuf_any_pb.Any): Site;
-
-    getSitesectionid(): string;
-    setSitesectionid(value: string): Site;
+    getDevice(): google_protobuf_struct_pb.Struct | undefined;
+    setDevice(value?: google_protobuf_struct_pb.Struct): Site;
 
     getSiteid(): string;
     setSiteid(value: string): Site;
@@ -60,11 +45,8 @@ export class Site extends jspb.Message {
 export namespace Site {
     export type AsObject = {
         Id: string,
-        sitesectionname: string,
-        appname?: google_protobuf_any_pb.Any.AsObject,
-        device?: google_protobuf_any_pb.Any.AsObject,
-        channel?: google_protobuf_any_pb.Any.AsObject,
-        sitesectionid: string,
+        sitename: string,
+        device?: google_protobuf_struct_pb.Struct.AsObject,
         siteid: string,
         datecreated?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     }

@@ -1,32 +1,26 @@
-import { User, UserStatus } from "../proto/users_pb";
-import getUser from "./get-user";
-import createUsers from "./create-users";
-import allUsers from "./all-users";
 import allSites from "./all-sites";
+import allSiteSections from "./all-sitesections";
+import allSiteGroups from "./all-sitegroups";
 
 async function run() {
-  const user = await getUser(1);
-  console.log(user.toString());
   
-
-  const jim = new User();
-  jim.setName("Jim");
-  jim.setAge(10);
-  jim.setId(20);
-  jim.setStatus(UserStatus.OFFLINE);
-  createUsers([jim]);
-  console.log(`\nCreated user ${jim.toString()}`);
-
-  const users = await allUsers();
-  console.log(`\nListing all ${users.length} users`);
-  for (const user of users) {
-    console.log(user.toString());
-  }
-
   const sites = await allSites();
   console.log(`\nListing all ${sites.length} sites`);
   for (const site of sites) {
-    console.log(site);
+    console.log(site.toString());
+  }
+
+
+  const sitesections = await allSiteSections();
+  console.log(`\nListing all ${sitesections.length} site sections`);
+  for (const sitesection of sitesections) {
+    console.log(sitesection.toString());
+  }
+
+  const sitegroups = await allSiteGroups();
+  console.log(`\nListing all ${sitegroups.length} site groups`);
+  for (const sitegroup of sitegroups) {
+    console.log(sitegroup.toString());
   }
 }
 
