@@ -6,8 +6,32 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
-import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+
+export class DeviceType extends jspb.Message { 
+    getDeviceid(): string;
+    setDeviceid(value: string): DeviceType;
+
+    getDevicename(): string;
+    setDevicename(value: string): DeviceType;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): DeviceType.AsObject;
+    static toObject(includeInstance: boolean, msg: DeviceType): DeviceType.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: DeviceType, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): DeviceType;
+    static deserializeBinaryFromReader(message: DeviceType, reader: jspb.BinaryReader): DeviceType;
+}
+
+export namespace DeviceType {
+    export type AsObject = {
+        deviceid: string,
+        devicename: string,
+    }
+}
 
 export class Site extends jspb.Message { 
     getId(): string;
@@ -19,8 +43,8 @@ export class Site extends jspb.Message {
 
     hasDevice(): boolean;
     clearDevice(): void;
-    getDevice(): google_protobuf_struct_pb.Struct | undefined;
-    setDevice(value?: google_protobuf_struct_pb.Struct): Site;
+    getDevice(): DeviceType | undefined;
+    setDevice(value?: DeviceType): Site;
 
     getSiteid(): string;
     setSiteid(value: string): Site;
@@ -44,9 +68,9 @@ export class Site extends jspb.Message {
 
 export namespace Site {
     export type AsObject = {
-        Id: string,
+        id: string,
         sitename: string,
-        device?: google_protobuf_struct_pb.Struct.AsObject,
+        device?: DeviceType.AsObject,
         siteid: string,
         datecreated?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     }

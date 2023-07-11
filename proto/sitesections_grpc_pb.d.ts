@@ -7,7 +7,6 @@
 import * as grpc from "grpc";
 import * as sitesections_pb from "./sitesections_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
-import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 
 interface ISiteSectionsService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {

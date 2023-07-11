@@ -232,7 +232,7 @@ proto.sitegroups.SiteGroup.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string _id = 1;
+ * optional string id = 1;
  * @return {string}
  */
 proto.sitegroups.SiteGroup.prototype.getId = function() {

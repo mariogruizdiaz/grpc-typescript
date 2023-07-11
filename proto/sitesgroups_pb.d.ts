@@ -40,7 +40,7 @@ export class SiteGroup extends jspb.Message {
 
 export namespace SiteGroup {
     export type AsObject = {
-        Id: string,
+        id: string,
         sitegroupname: string,
         sitegroupid: string,
         parentsitegroupid: string,

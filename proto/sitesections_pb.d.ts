@@ -6,8 +6,82 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
-import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+
+export class AppName extends jspb.Message { 
+    getAppnameid(): string;
+    setAppnameid(value: string): AppName;
+
+    getName(): string;
+    setName(value: string): AppName;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AppName.AsObject;
+    static toObject(includeInstance: boolean, msg: AppName): AppName.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: AppName, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AppName;
+    static deserializeBinaryFromReader(message: AppName, reader: jspb.BinaryReader): AppName;
+}
+
+export namespace AppName {
+    export type AsObject = {
+        appnameid: string,
+        name: string,
+    }
+}
+
+export class DeviceType extends jspb.Message { 
+    getDeviceid(): string;
+    setDeviceid(value: string): DeviceType;
+
+    getDevicename(): string;
+    setDevicename(value: string): DeviceType;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): DeviceType.AsObject;
+    static toObject(includeInstance: boolean, msg: DeviceType): DeviceType.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: DeviceType, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): DeviceType;
+    static deserializeBinaryFromReader(message: DeviceType, reader: jspb.BinaryReader): DeviceType;
+}
+
+export namespace DeviceType {
+    export type AsObject = {
+        deviceid: string,
+        devicename: string,
+    }
+}
+
+export class Channel extends jspb.Message { 
+    getChannelid(): string;
+    setChannelid(value: string): Channel;
+
+    getName(): string;
+    setName(value: string): Channel;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): Channel.AsObject;
+    static toObject(includeInstance: boolean, msg: Channel): Channel.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: Channel, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): Channel;
+    static deserializeBinaryFromReader(message: Channel, reader: jspb.BinaryReader): Channel;
+}
+
+export namespace Channel {
+    export type AsObject = {
+        channelid: string,
+        name: string,
+    }
+}
 
 export class SiteSection extends jspb.Message { 
     getId(): string;
@@ -19,20 +93,20 @@ export class SiteSection extends jspb.Message {
 
     hasAppname(): boolean;
     clearAppname(): void;
-    getAppname(): google_protobuf_struct_pb.Struct | undefined;
-    setAppname(value?: google_protobuf_struct_pb.Struct): SiteSection;
+    getAppname(): AppName | undefined;
+    setAppname(value?: AppName): SiteSection;
 
 
     hasDevice(): boolean;
     clearDevice(): void;
-    getDevice(): google_protobuf_struct_pb.Struct | undefined;
-    setDevice(value?: google_protobuf_struct_pb.Struct): SiteSection;
+    getDevice(): DeviceType | undefined;
+    setDevice(value?: DeviceType): SiteSection;
 
 
     hasChannel(): boolean;
     clearChannel(): void;
-    getChannel(): google_protobuf_struct_pb.Struct | undefined;
-    setChannel(value?: google_protobuf_struct_pb.Struct): SiteSection;
+    getChannel(): Channel | undefined;
+    setChannel(value?: Channel): SiteSection;
 
     getSitesectionid(): string;
     setSitesectionid(value: string): SiteSection;
@@ -59,11 +133,11 @@ export class SiteSection extends jspb.Message {
 
 export namespace SiteSection {
     export type AsObject = {
-        Id: string,
+        id: string,
         sitesectionname: string,
-        appname?: google_protobuf_struct_pb.Struct.AsObject,
-        device?: google_protobuf_struct_pb.Struct.AsObject,
-        channel?: google_protobuf_struct_pb.Struct.AsObject,
+        appname?: AppName.AsObject,
+        device?: DeviceType.AsObject,
+        channel?: Channel.AsObject,
         sitesectionid: string,
         siteid: string,
         datecreated?: google_protobuf_timestamp_pb.Timestamp.AsObject,

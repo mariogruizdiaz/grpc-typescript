@@ -4,7 +4,7 @@ import {
 } from "../../proto/sitesgroups_grpc_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import { SiteGroup, SiteGroupRequest } from "../../proto/sitesgroups_pb";
-import { siteGroups } from "../fakeDB";
+import { fakeDB } from "../fakeDB";
 
 export class SiteGroupsServer implements ISiteGroupsServer {
   createSiteGroup(
@@ -17,7 +17,7 @@ export class SiteGroupsServer implements ISiteGroupsServer {
   
       call.on("data", (u) => {
         siteGroupCount++;
-        siteGroups.push(u);
+        fakeDB.createSiteGroup(u);
       });
   
       call.on("end", () => {
@@ -28,7 +28,7 @@ export class SiteGroupsServer implements ISiteGroupsServer {
 
   getSiteGroup(call: ServerUnaryCall<SiteGroupRequest>, callback: sendUnaryData<SiteGroup>) {
     const siteGroupId = call.request.getId();
-    const siteGroup = siteGroups.find((u) => u.getId() === siteGroupId);
+    const siteGroup = fakeDB.getSiteGroupById(siteGroupId);
 
     if (!siteGroup) {
       const error: ServiceError = {
@@ -45,7 +45,7 @@ export class SiteGroupsServer implements ISiteGroupsServer {
 
   getSiteGroups(call: ServerWritableStream<Empty>) {
     console.log(`getSiteGroups: streaming all Site Groups.`);
-    for (const siteGroup of siteGroups) call.write(siteGroup);
+    for (const siteGroup of fakeDB.getAllSiteGroups()) call.write(siteGroup);
     call.end();
   }
 }

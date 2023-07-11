@@ -1,182 +1,245 @@
-import { Struct, Value } from "google-protobuf/google/protobuf/struct_pb";
-import { SiteSection } from "../proto/sitesections_pb";
 import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb";
+import { AppName, DeviceType, Channel, SiteSection } from "../proto/sitesections_pb";
 import { Site } from "../proto/sites_pb";
 import { SiteGroup } from "../proto/sitesgroups_pb";
 
+class FakeDatabase {
+    private siteSections: SiteSection[];
+    private sites: Site[];
+    private siteGroups: SiteGroup[];
 
-//#region Site DB
-
-export const sites: Site[] = [
-    {
-        Id: "1",
-        sitename: "Site A",
-        device: createAnyMessage({ name: "Device 1" }).toObject(),
-        siteid: "site-1",
-        datecreated: createTimestamp(new Date("2022-01-01")).toObject(),
-    },
-    {
-        Id: "2",
-        sitename: "Site B",
-        device: createAnyMessage({ name: "Device 2" }).toObject(),
-        siteid: "site-2",
-        datecreated: createTimestamp(new Date("2022-02-01")).toObject(),
-    },
-].map(siteToClass);
-
-export function siteToClass(data: Site.AsObject): Site {
-    const site = new Site();
-    site.setId(data.Id);
-    site.setSitename(data.sitename);
-    site.setSiteid(data.siteid);
-
-
-    if (data.device) {
-        const deviceStruct = createAnyMessage(data.device);
-        site.setDevice(deviceStruct);
+    constructor() {
+        this.siteSections = [];
+        this.sites = [];
+        this.siteGroups = [];
+        this.initializeData();
     }
 
+    private initializeData(): void {
+        const app1 = new AppName();
+        app1.setAppnameid("app1");
+        app1.setName("Application 1");
 
-    if (data.datecreated) {
-        const timestamp = new Timestamp();
-        timestamp.setSeconds(data.datecreated.seconds);
-        timestamp.setNanos(data.datecreated.nanos);
-        site.setDatecreated(timestamp);
+        const device1 = new DeviceType();
+        device1.setDeviceid("device1");
+        device1.setDevicename("Device 1");
+
+        const channel1 = new Channel();
+        channel1.setChannelid("channel1");
+        channel1.setName("Channel 1");
+
+        const siteSection1 = new SiteSection();
+        siteSection1.setId("section1");
+        siteSection1.setSitesectionname("Site Section 1");
+        siteSection1.setAppname(app1);
+        siteSection1.setDevice(device1);
+        siteSection1.setChannel(channel1);
+        siteSection1.setSitesectionid("section1");
+        siteSection1.setSiteid("site1");
+        const timestamp1 = new Timestamp();
+        // timestamp1.setSeconds(Date.now() / 1000);
+        siteSection1.setDatecreated(timestamp1);
+
+        const app2 = new AppName();
+        app2.setAppnameid("app2");
+        app2.setName("Application 2");
+
+        const device2 = new DeviceType();
+        device2.setDeviceid("device2");
+        device2.setDevicename("Device 2");
+
+        const channel2 = new Channel();
+        channel2.setChannelid("channel2");
+        channel2.setName("Channel 2");
+
+        const siteSection2 = new SiteSection();
+        siteSection2.setId("section2");
+        siteSection2.setSitesectionname("Site Section 2");
+        siteSection2.setAppname(app2);
+        siteSection2.setDevice(device2);
+        siteSection2.setChannel(channel2);
+        siteSection2.setSitesectionid("section2");
+        siteSection2.setSiteid("site2");
+        const timestamp2 = new Timestamp();
+        // timestamp2.setSeconds(Date.now() / 1000);
+        siteSection2.setDatecreated(timestamp2);
+
+        this.siteSections.push(siteSection1, siteSection2);
+
+        const site1 = new Site();
+        site1.setId("site1");
+        site1.setSitename("Site 1");
+        site1.setDevice(device1);
+        site1.setSiteid("site1");
+        site1.setDatecreated(timestamp1);
+
+        const site2 = new Site();
+        site2.setId("site2");
+        site2.setSitename("Site 2");
+        site2.setDevice(device2);
+        site2.setSiteid("site2");
+        site2.setDatecreated(timestamp2);
+
+        this.sites.push(site1, site2);
+
+        const siteGroup1 = new SiteGroup();
+        siteGroup1.setId("group1");
+        siteGroup1.setSitegroupname("Site Group 1");
+        siteGroup1.setSitegroupid("group1");
+        siteGroup1.setParentsitegroupid("");
+        siteGroup1.setDatecreated(timestamp1);
+
+        const siteGroup2 = new SiteGroup();
+        siteGroup2.setId("group2");
+        siteGroup2.setSitegroupname("Site Group 2");
+        siteGroup2.setSitegroupid("group2");
+        siteGroup2.setParentsitegroupid("group1");
+        siteGroup2.setDatecreated(timestamp2);
+
+        this.siteGroups.push(siteGroup1, siteGroup2);
     }
 
-    return site;
+    getAllSiteSections(): SiteSection[] {
+        return this.siteSections;
+    }
+
+    getSiteSectionById(id: string): SiteSection | undefined {
+        return this.siteSections.find((section) => section.getId() === id);
+    }
+
+    createSiteSection(newSection: SiteSection): void {
+        this.siteSections.push(newSection);
+    }
+
+    getAllSites(): Site[] {
+        return this.sites;
+    }
+
+    getSiteById(id: string): Site | undefined {
+        return this.sites.find((site) => site.getId() === id);
+    }
+
+    createSite(newSite: Site): void {
+        this.sites.push(newSite);
+    }
+
+    getAllSiteGroups(): SiteGroup[] {
+        return this.siteGroups;
+    }
+
+    getSiteGroupById(id: string): SiteGroup | undefined {
+        return this.siteGroups.find((group) => group.getId() === id);
+    }
+
+    createSiteGroup(newGroup: SiteGroup): void {
+        this.siteGroups.push(newGroup);
+    }
 }
 
-//#endregion Site DB
+// Uso de la Fake Database
+export const fakeDB = new FakeDatabase();
 
+//#region Tests
 
-//#region Site Sections DB
-export const siteSections: SiteSection[] = [
-    {
-        Id: "1",
-        sitesectionname: "Section A",
-        appname: createAnyMessage({ name: "App 1" }).toObject(),
-        device: createAnyMessage({ name: "Device 1" }).toObject(),
-        channel: createAnyMessage({ name: "Channel 1" }).toObject(),
-        sitesectionid: "section-a",
-        siteid: "site-1",
-        datecreated: createTimestamp(new Date("2022-01-01")).toObject(),
-    },
-    {
-        Id: "2",
-        sitesectionname: "Section B",
-        appname: createAnyMessage({ name: "App 2" }).toObject(),
-        device: createAnyMessage({ name: "Device 2" }).toObject(),
-        channel: createAnyMessage({ name: "Channel 2" }).toObject(),
-        sitesectionid: "section-b",
-        siteid: "site-2",
-        datecreated: createTimestamp(new Date("2022-02-01")).toObject(),
-    },
-].map(siteSectionToClass);
+// Obtener todas las SiteSections
+// const allSiteSections = fakeDB.getAllSiteSections();
+// for (const section of allSiteSections) {
+//     console.log(section.toObject());
+// }
 
+// Obtener una SiteSection por su ID
+// const siteSection = fakeDB.getSiteSectionById("section1");
+// console.log(siteSection?.toObject());
 
-export function siteSectionToClass(data: SiteSection.AsObject): SiteSection {
-    const site = new SiteSection();
-    site.setId(data.Id);
-    site.setSitesectionname(data.sitesectionname);
-    site.setSitesectionid(data.sitesectionid);
-    site.setSiteid(data.siteid);
+console.log('-------- Site Sections--------');
+// Crear una nueva SiteSection
+const newSiteSection = new SiteSection();
+newSiteSection.setId("section3");
+newSiteSection.setSitesectionname("Site Section 3");
 
-    if (data.appname) {
-        const appNameStruct = createAnyMessage(data.appname);
-        site.setAppname(appNameStruct);
-    }
+const newApp = new AppName();
+newApp.setAppnameid("app3");
+newApp.setName("Application 3");
+newSiteSection.setAppname(newApp);
 
-    if (data.device) {
-        const deviceStruct = createAnyMessage(data.device);
-        site.setDevice(deviceStruct);
-    }
+const newDevice = new DeviceType();
+newDevice.setDeviceid("device3");
+newDevice.setDevicename("Device 3");
+newSiteSection.setDevice(newDevice);
 
-    if (data.channel) {
-        const channelStruct = createAnyMessage(data.channel);
-        site.setChannel(channelStruct);
-    }
+const newChannel = new Channel();
+newChannel.setChannelid("channel3");
+newChannel.setName("Channel 3");
+newSiteSection.setChannel(newChannel);
 
-    if (data.datecreated) {
-        const timestamp = new Timestamp();
-        timestamp.setSeconds(data.datecreated.seconds);
-        timestamp.setNanos(data.datecreated.nanos);
-        site.setDatecreated(timestamp);
-    }
+newSiteSection.setSitesectionid("section3");
+newSiteSection.setSiteid("site3");
+const newTimestamp = new Timestamp();
+// newTimestamp.setSeconds(Date.now() / 1000);
+newSiteSection.setDatecreated(newTimestamp);
 
-    return site;
+fakeDB.createSiteSection(newSiteSection);
+
+// Obtener todas las SiteSections actualizadas
+const updatedSiteSections = fakeDB.getAllSiteSections();
+for (const section of updatedSiteSections) {
+    console.log(section.toObject());
 }
 
-//#endregion Site Sections DB
+console.log('-------- Sites --------');
+
+// // Obtener todos los sitios
+// const allSites = fakeDB.getAllSites();
+// for (const site of allSites) {
+//     console.log(site.toObject());
+// }
+
+// // Obtener un sitio por su ID
+// const site = fakeDB.getSiteById("site1");
+// console.log(site?.toObject());
+
+// Crear un nuevo sitio
+const newSite = new Site();
+newSite.setId("site3");
+newSite.setSitename("Site 3");
+newSite.setDevice(newDevice);
+newSite.setSiteid("site3");
+newSite.setDatecreated(newTimestamp);
+
+fakeDB.createSite(newSite);
 
 
-//#region Site Groups DB
-export const siteGroups: SiteGroup[] = [
-    {
-        Id: "1",
-        sitegroupname: "Site Group A",
-        sitegroupid: "WRQRQQW",
-        parentsitegroupid: "sdfsdgsg",
-        datecreated: createTimestamp(new Date("2022-01-01")).toObject(),
-    },
-    {
-        Id: "1",
-        sitegroupname: "Site Group B",
-        sitegroupid: "DSDASDFASF",
-        parentsitegroupid: "asfasfaFAS",
-        datecreated: createTimestamp(new Date("2022-01-01")).toObject(),
-    },
-].map(siteGroupToClass);
-
-
-
-export function siteGroupToClass(data: SiteGroup.AsObject): SiteGroup {
-    const siteGroup = new SiteGroup();
-    siteGroup.setSitegroupname(data.sitegroupname);
-    siteGroup.setSitegroupid(data.sitegroupid);
-    siteGroup.setParentsitegroupid(data.parentsitegroupid);
-
-    if (data.datecreated) {
-        const timestamp = new Timestamp();
-        timestamp.setSeconds(data.datecreated.seconds);
-        timestamp.setNanos(data.datecreated.nanos);
-        siteGroup.setDatecreated(timestamp);
-    }
-
-    return siteGroup;
+// Obtener todos los sitios actualizados
+const updatedSites = fakeDB.getAllSites();
+for (const site of updatedSites) {
+    console.log(site.toObject());
 }
 
-//#endregion Site Groups DB
+// Obtener todos los grupos de sitios
+// const allSiteGroups = fakeDB.getAllSiteGroups();
+// for (const group of allSiteGroups) {
+//     console.log(group.toObject());
+// }
 
+// Obtener un grupo de sitio por su ID
+// const siteGroup = fakeDB.getSiteGroupById("group1");
+// console.log(siteGroup?.toObject());
 
-//#region Helpers
+console.log('-------- Site Groups --------');
+// Crear un nuevo grupo de sitio
+const newSiteGroup = new SiteGroup();
+newSiteGroup.setId("group3");
+newSiteGroup.setSitegroupname("Site Group 3");
+newSiteGroup.setSitegroupid("group3");
+newSiteGroup.setParentsitegroupid("group1");
+newSiteGroup.setDatecreated(newTimestamp);
 
-function createAnyMessage(data: object): Struct {
-    const struct = new Struct();
+fakeDB.createSiteGroup(newSiteGroup);
 
-    Object.entries(data).forEach(([key, value]) => {
-        const fieldValue = new Value();
-
-        if (typeof value === "string") {
-            fieldValue.setStringValue(value);
-        } else if (typeof value === "number") {
-            fieldValue.setNumberValue(value);
-        } else if (typeof value === "boolean") {
-            fieldValue.setBoolValue(value);
-        } else {
-            console.warn(`Unsupported type for field '${key}'`);
-        }
-
-        struct.getFieldsMap().set(key, fieldValue);
-    });
-
-    return struct;
+// Obtener todos los grupos de sitios actualizados
+const updatedSiteGroups = fakeDB.getAllSiteGroups();
+for (const group of updatedSiteGroups) {
+    console.log(group.toObject());
 }
 
-function createTimestamp(date: Date): Timestamp {
-    const timestamp = new Timestamp();
-    timestamp.fromDate(date);
-    return timestamp;
-}
-
-//#endregion Helpers
+//#endregion Tests

@@ -6,7 +6,7 @@ import {
 } from "../../proto/sites_grpc_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import { Site, SiteRequest } from "../../proto/sites_pb";
-import { sites } from "../fakeDB";
+import { fakeDB } from "../fakeDB";
 
 export class SitesServer implements ISitesServer {
   createSite(
@@ -19,7 +19,7 @@ export class SitesServer implements ISitesServer {
   
       call.on("data", (u) => {
         siteCount++;
-        sites.push(u);
+        fakeDB.createSite(u);
       });
   
       call.on("end", () => {
@@ -30,7 +30,7 @@ export class SitesServer implements ISitesServer {
 
   getSite(call: ServerUnaryCall<SiteRequest>, callback: sendUnaryData<Site>) {
     const siteId = call.request.getId();
-    const site = sites.find((u) => u.getId() === siteId);
+    const site = fakeDB.getSiteById(siteId);
 
     if (!site) {
       const error: ServiceError = {
@@ -46,8 +46,8 @@ export class SitesServer implements ISitesServer {
   }
 
   getSites(call: ServerWritableStream<Empty>) {
-    console.log(`getUsers: streaming all users.`);
-    for (const site of sites) call.write(site);
+    console.log(`getSites: streaming all sites.`);
+    for (const site of fakeDB.getAllSites()) call.write(site);
     call.end();
   }
 }
